@@ -1,0 +1,34 @@
+From 87a76a34d9ed00477200c0c6e079640e39ba9b89 Mon Sep 17 00:00:00 2001
+Message-ID: <87a76a34d9ed00477200c0c6e079640e39ba9b89.1765497448.git.shivajiva101@hotmail.com>
+From: shiva jiva <shivajiva101@hotmail.com>
+Date: Thu, 11 Dec 2025 15:04:49 +0000
+Subject: [PATCH] fix for openwrt
+
+---
+ setup.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index caa386aeb..bed8896b9 100644
+--- a/setup.py
++++ b/setup.py
+@@ -35,7 +35,7 @@ bundled_plugins = [
+     "OctoPrint-PiSupport>=2023.10.10",
+ ]
+ core_deps = [
+-    "argon2-cffi>=23.1.0",
++    #"argon2-cffi>=23.1.0",
+     "Babel>=2.12.1,<2.13",  # breaking changes can happen on minor version increases
+     "cachelib>=0.10.2,<0.11",
+     "Click>=8.1.7,<9",
+@@ -50,6 +50,7 @@ core_deps = [
+     "flask>=2.2.3,<2.3",  # breaking changes can happen on minor version increases (with deprecation warnings)
+     "frozendict>=2.4.0,<3",
+     "future>=0.18.3,<1",  # not really needed anymore, but leaving in for py2/3 compat plugins
++    "limits<5",
+     "markdown>=3.4.4,<3.5",  # later versions require Python 3.8+
+     "netaddr>=0.8,<0.9",  # changelog hints at breaking changes on minor version increases
+     # "netifaces2>=0.0.21,<0.1",  # fork of netifaces in Rust, use rolled back due to build issues in some environments
+-- 
+2.47.3
+

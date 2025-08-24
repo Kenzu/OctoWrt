@@ -1,0 +1,9 @@
+--find-links=python_wheels
+future==0.18.3
+octoprint==1.10.3
+psutil==5.9.8
+pyyaml==6.0.2
+regex==2025.7.34
+sgmllib3k==1.0.0
+tornado==6.2
+watchdog==2.3.1
