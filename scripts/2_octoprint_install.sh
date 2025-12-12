@@ -73,7 +73,7 @@ echo "   ############################"
 echo "   ### Installing Octoprint ###"
 echo "   ############################"
 echo " "
-echo " This is going to take a while... "
+echo " This is going to take about 35-40 minutes... "
 echo " "
 
 echo "Cloning source..."
