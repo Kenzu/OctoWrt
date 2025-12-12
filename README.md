@@ -302,7 +302,7 @@ Congratulations you are all done! You can access OctoPrint through the wireless 
   #### 1. Execute extroot script:
    Make sure you have a microSD card inserted, then copy and paste the commands below...
   ```
-  wget https://github.com/shivajiva101/OctoWrt/raw/24.10.2-93/scripts/1_format_extroot.sh
+  wget https://github.com/shivajiva101/OctoWrt/raw/24.10.4-110/scripts/1_format_extroot.sh
   chmod +x 1_format_extroot.sh
   ./1_format_extroot.sh
 
@@ -311,7 +311,7 @@ Congratulations you are all done! You can access OctoPrint through the wireless 
   <b>Important:</b> You *need* a stable internet connection for this to succeed.
   If the script fails try using the manual installation method.
   ```
-  wget https://github.com/shivajiva101/OctoWrt/raw/24.10.2-93/scripts/2_octoprint_install.sh
+  wget https://github.com/shivajiva101/OctoWrt/raw/24.10.4-110/scripts/2_octoprint_install.sh
   chmod +x 2_octoprint_install.sh
   ./2_octoprint_install.sh
 
@@ -359,11 +359,11 @@ Congratulations you are all done! You can access OctoPrint through the wireless 
 
 
  #### 1. Extroot:
-  First execute [this](https://github.com/shivajiva101/OctoWrt/blob/24.10.2-93/scripts/1_format_extroot.sh) script. Make sure you have a microsd card inserted as this step creates an extroot filesytem overlay on the card to expand the available space. Here's the code to fetch the script and run it.
+  First execute [this](https://github.com/shivajiva101/OctoWrt/blob/24.10.4-110/scripts/1_format_extroot.sh) script. Make sure you have a microsd card inserted as this step creates an extroot filesytem overlay on the card to expand the available space. Here's the code to fetch the script and run it.
   
   ```
   cd ~
-  wget https://github.com/shivajiva101/OctoWrt/raw/24.10.2-93/scripts/1_format_extroot.sh
+  wget https://github.com/shivajiva101/OctoWrt/raw/24.10.4-110/scripts/1_format_extroot.sh
   chmod +x 1_format_extroot.sh
   ./1_format_extroot.sh
 
