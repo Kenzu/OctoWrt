@@ -63,6 +63,7 @@ cd python_wheels
 wget https://raw.githubusercontent.com/shivajiva101/OctoWrt/$tag/python/python_wheels/Archive.tar.gz
 tar -xzf Archive.tar.gz
 cd ~
+wget https://raw.githubusercontent.com/shivajiva101/OctoWrt/$tag/scripts/pdeps.txt
 
 echo "Installing wheels..."
 pip install -r pdeps.txt;
@@ -81,8 +82,6 @@ cd src
 echo "Patching source..."
 wget https://github.com/shivajiva101/OctoWrt/raw/$tag/octoprint/openwrt.patch
 git apply openwrt.patch
-git add .
-git commit -m "openwrt compatibility patch"
 
 echo "Starting pip install..."
 pip install .
