@@ -18,10 +18,13 @@ format(){
 		* ) echo "Please answer yes or no.";;
 	    esac
 	done
-	
+	opkg update;
+	opkg install block-mount kmod-fs-ext4 e2fsprogs parted
 	umount /dev/mmcblk0p1;
-
-	yes | mkfs.ext4 /dev/mmcblk0p1;
+	parted -s /dev/mmcblk0 -- mklabel gpt
+	parted -s /dev/mmcblk0 -- mkpart swap 2048s 256M
+	parted -s /dev/mmcblk0 -- mkpart extroot 256M 100%
+	yes | mkfs.ext4 /dev/mmcblk0p2;
 
 }
 
