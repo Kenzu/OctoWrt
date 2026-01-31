@@ -1,75 +1,32 @@
 #!/bin/sh
-
-echo " "
-echo "This script will format your sd card and make it extroot"
-echo " "
-echo "   ###################################################"
-echo "   ## Make sure you have a microSD card plugged in! ##"
-echo "   ###################################################"
-echo " "
-read -p "Press [ENTER] to continue...or [ctrl+c] to exit"
-
-format(){
-	while true; do
-	    read -p "This script will format your sdcard. Are you sure about this? [y/n]: " yn
-	    case $yn in
-		[Yy]* ) break;;
-		[Nn]* ) exit;;
-		* ) echo "Please answer yes or no.";;
-	    esac
-	done
-	opkg update;
-	opkg install block-mount kmod-fs-ext4 e2fsprogs parted
-	umount /dev/mmcblk0p1;
-	parted -s /dev/mmcblk0 -- mklabel gpt;
-	parted -s /dev/mmcblk0 -- mkpart swap 2048s 256M;
-	parted -s /dev/mmcblk0 -- mkpart extroot 256M 100%;
-	yes | mkfs.ext4 /dev/mmcblk0p2;
-
-}
-
-extroot(){
-	echo " "
-	sleep 1
-	echo -ne 'Making extroot...     [=>                                ](6%)\r'
-	DEVICE="$(sed -n -e "/\s\/overlay\s.*$/s///p" /etc/mtab)";
-	echo -ne 'Making extroot...     [===>                              ](12%)\r'
-	uci -q delete fstab.rwm;
-	echo -ne 'Making extroot...     [=====>                            ](18%)\r'
-	uci set fstab.rwm="mount";
-	echo -ne 'Making extroot...     [=======>                          ](25%)\r'
-	uci set fstab.rwm.device="${DEVICE}";
-	echo -ne 'Making extroot...     [=========>                        ](31%)\r'
-	uci set fstab.rwm.target="/rwm";
-	echo -ne 'Making extroot...     [===========>                      ](37%)\r'
-	uci commit fstab;
-	echo -ne 'Making extroot...     [=============>                    ](43%)\r'
-	DEVICE="/dev/mmcblk0p2";
-	echo -ne 'Making extroot...     [===============>                  ](50%)\r'
-	eval $(block info "${DEVICE}" | grep -o -e "UUID=\S*");
-	echo -ne 'Making extroot...     [=================>                ](56%)\r'
-	uci -q delete fstab.overlay;
-	echo -ne 'Making extroot...     [===================>              ](62%)\r'
-	uci set fstab.overlay="mount";
-	echo -ne 'Making extroot...     [=====================>            ](68%)\r'
-	uci set fstab.overlay.uuid="${UUID}";
-	echo -ne 'Making extroot...     [=======================>          ](75%)\r'
-	uci set fstab.overlay.target="/overlay";
-	echo -ne 'Making extroot...     [=========================>        ](81%)\r'
-	uci commit fstab;
-	echo -ne 'Making extroot...     [===========================>      ](87%)\r'
-	mount /dev/mmcblk0p2 /mnt;
-	echo -ne 'Making extroot...     [=============================>    ](93%)\r'
-	cp -f -a /overlay/. /mnt;
-	echo -ne 'Making extroot...     [===============================>  ](98%)\r'
-	umount /mnt;
-	echo -ne 'Making extroot...     [=================================>](100%)\r'
-	echo -ne '\n'
-
-	echo "Now reboot and run the second script!";
-}
-
-format
-extroot
-read -p "Press [ENTER] to reboot...or [CTRL+C] to exit"
+DISK="/dev/mmcblk0";
+opkg update;
+opkg install block-mount kmod-fs-ext4 e2fsprogs parted;
+parted -s ${DISK} -- mklabel gpt;
+parted -s ${DISK} -- mkpart swap 2048s 256M;
+parted -s ${DISK} -- mkpart extroot 256M 100%;
+SWAP="${DISK}p1";
+DEVICE="${DISK}p2";
+mkswap ${SWAP};
+mkfs.ext4 -L extroot ${DEVICE};
+eval $(block info ${DEVICE} | grep -o -e 'UUID="\S*"');
+eval $(block info | grep -o -e 'MOUNT="\S*/overlay"');
+uci -q delete fstab.extroot;
+uci set fstab.extroot="mount";
+uci set fstab.extroot.uuid="${UUID}";
+uci set fstab.extroot.target="${MOUNT}";
+uci commit fstab;
+mount ${DEVICE} /mnt;
+tar -C ${MOUNT} -cvf - . | tar -C /mnt -xf -;
+echo "Updating rc.local for swap"
+rm /etc/rc.local;
+cat << "EOF" > /etc/rc.local
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+###activate the swap file on the SD card
+swapon ${SWAP}
+###expand /tmp space
+mount -o remount,size=128M /tmp
+exit 0
+EOF
 reboot
