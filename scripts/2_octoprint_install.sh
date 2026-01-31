@@ -21,12 +21,11 @@ echo "   ###   SWAP    ###"
 echo "   #################"
 echo " "
 
-echo "Creating swap file"
-dd if=/dev/zero of=/overlay/swap.page bs=1M count=512;
-echo "Enabling swap file"
-mkswap /overlay/swap.page;
-swapon /overlay/swap.page;
-mount -o remount,size=256M /tmp;
+echo "Creating swap"
+mkswap /dev/mmcblk0p1;
+echo "Enabling swap"
+swapon /dev/mmcblk0p1;
+mount -o remount,size=128M /tmp;
 
 echo "Updating rc.local for swap"
 rm /etc/rc.local;
@@ -34,9 +33,9 @@ cat << "EOF" > /etc/rc.local
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 ###activate the swap file on the SD card
-swapon /overlay/swap.page
+swapon /dev/mmcblk0p1
 ###expand /tmp space
-mount -o remount,size=256M /tmp
+mount -o remount,size=128M /tmp
 exit 0
 EOF
 
