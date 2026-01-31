@@ -28,5 +28,5 @@ swapon ${SWAP}
 ###expand /tmp space
 mount -o remount,size=128M /tmp
 exit 0
-EOF
-reboot
+EOF;
+reboot;
