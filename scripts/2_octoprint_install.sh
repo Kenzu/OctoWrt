@@ -16,30 +16,6 @@ echo " "
 read -p "Press [ENTER] to Continue ...or [ctrl+c] to exit"
 
 echo " "
-echo "   #################"
-echo "   ###   SWAP    ###"
-echo "   #################"
-echo " "
-
-echo "Creating swap"
-mkswap /dev/mmcblk0p1;
-echo "Enabling swap"
-swapon /dev/mmcblk0p1;
-mount -o remount,size=128M /tmp;
-
-echo "Updating rc.local for swap"
-rm /etc/rc.local;
-cat << "EOF" > /etc/rc.local
-# Put your custom commands here that should be executed once
-# the system init finished. By default this file does nothing.
-###activate the swap file on the SD card
-swapon /dev/mmcblk0p1
-###expand /tmp space
-mount -o remount,size=128M /tmp
-exit 0
-EOF
-
-echo " "
 echo "   ###############################"
 echo "   ### Installing dependencies ###"
 echo "   ###############################"
