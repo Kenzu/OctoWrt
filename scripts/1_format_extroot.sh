@@ -30,7 +30,7 @@ echo "Step 6: Formatting the swap partition ${SWAP}..."
 mkswap ${SWAP};
 
 echo "Step 7: Formatting the extroot partition ${DEVICE} as ext4 and labeling it 'extroot'..."
-mkfs.ext4 -L extroot ${DEVICE};
+mkfs.ext4 -F -L extroot ${DEVICE};
 
 echo "Step 8: Reading UUID for ${DEVICE} from block info..."
 # Extract UUID="..." string and evaluate so UUID variable is exported in the script environment
