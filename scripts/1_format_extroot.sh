@@ -44,7 +44,7 @@ extroot(){
 	echo -ne 'Making extroot...     [===========>                      ](37%)\r'
 	uci commit fstab;
 	echo -ne 'Making extroot...     [=============>                    ](43%)\r'
-	DEVICE="/dev/mmcblk0p1";
+	DEVICE="/dev/mmcblk0p2";
 	echo -ne 'Making extroot...     [===============>                  ](50%)\r'
 	eval $(block info "${DEVICE}" | grep -o -e "UUID=\S*");
 	echo -ne 'Making extroot...     [=================>                ](56%)\r'
@@ -58,7 +58,7 @@ extroot(){
 	echo -ne 'Making extroot...     [=========================>        ](81%)\r'
 	uci commit fstab;
 	echo -ne 'Making extroot...     [===========================>      ](87%)\r'
-	mount /dev/mmcblk0p1 /mnt;
+	mount /dev/mmcblk0p2 /mnt;
 	echo -ne 'Making extroot...     [=============================>    ](93%)\r'
 	cp -f -a /overlay/. /mnt;
 	echo -ne 'Making extroot...     [===============================>  ](98%)\r'
