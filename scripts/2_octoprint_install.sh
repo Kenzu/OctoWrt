@@ -1,8 +1,8 @@
 #!/bin/sh
 
-tag="24.10.4-110";
+tag="main";
 
-if mount | grep "/dev/mmcblk0p1 on /overlay type ext4" > /dev/null; then
+if mount | grep "/dev/mmcblk0p2 on /overlay type ext4" > /dev/null; then
 
 echo " "
 echo " "
@@ -59,10 +59,10 @@ pip install --upgrade pip
 echo "Fetching wheels..."
 mkdir python_wheels
 cd python_wheels
-wget https://raw.githubusercontent.com/shivajiva101/OctoWrt/$tag/python/python_wheels/Archive.tar.gz
+wget https://raw.githubusercontent.com/Kenzu/OctoWrt/$tag/python/python_wheels/Archive.tar.gz
 tar -xzf Archive.tar.gz
 cd ~
-wget https://raw.githubusercontent.com/shivajiva101/OctoWrt/$tag/scripts/pdeps.txt
+wget https://raw.githubusercontent.com/Kenzu/OctoWrt/$tag/scripts/pdeps.txt
 
 echo "Installing wheels..."
 pip install -r pdeps.txt;
@@ -79,7 +79,7 @@ echo "Cloning source..."
 git clone --depth 1 -b 1.10.3 https://github.com/OctoPrint/OctoPrint.git src
 cd src
 echo "Patching source..."
-wget https://github.com/shivajiva101/OctoWrt/raw/$tag/octoprint/openwrt.patch
+wget https://github.com/Kenzu/OctoWrt/raw/$tag/octoprint/openwrt.patch
 git apply openwrt.patch
 
 echo "Starting pip install..."
