@@ -24,10 +24,10 @@ echo " "
 opkg update
 opkg install --force-overwrite gcc;
 opkg install make unzip htop wget-ssl git-http kmod-video-uvc luci-app-mjpg-streamer v4l-utils mjpg-streamer-input-uvc mjpg-streamer-output-http mjpg-streamer-www ffmpeg
-opkg install python3 python3-pip python3-dev python3-netifaces python3-markupsafe python3-zeroconf
+opkg install python3 python3-pip python3-dev python3-netifaces python3-markupsafe python3-zeroconf python3-pillow
 
-wget -q https://raw.githubusercontent.com/shivajiva101/KlipperWrt/v4.4/python/python3-pillow_10.1.0-r1_mipsel_24kc.ipk
-opkg install /root/python3-pillow_10.1.0-r1_mipsel_24kc.ipk
+#wget -q https://raw.githubusercontent.com/shivajiva101/KlipperWrt/v4.4/python/python3-pillow_10.1.0-r1_mipsel_24kc.ipk
+#opkg install /root/python3-pillow_10.1.0-r1_mipsel_24kc.ipk
 
 pip install --upgrade setuptools
 pip install --upgrade pip
