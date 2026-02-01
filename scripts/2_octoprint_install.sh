@@ -2,7 +2,7 @@
 
 tag="main";
 
-if mount | grep "/dev/mmcblk0p2 on /overlay type ext4" > /dev/null; then
+if mount | grep "/dev/mmcblk0p1 on /overlay type ext4" > /dev/null; then
 
 echo " "
 echo " "
