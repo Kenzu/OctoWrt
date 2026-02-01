@@ -4,6 +4,7 @@
 # This version adds echo statements to explain each step as it runs.
 
 DISK="/dev/mmcblk0";
+sysctl vm.min_free_kbytes=1024 | tee -a /etc/sysctl.conf;
 
 echo "Step 1: Updating opkg package lists..."
 opkg update;
