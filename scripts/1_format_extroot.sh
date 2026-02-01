@@ -7,10 +7,10 @@ DISK="/dev/mmcblk0";
 sysctl vm.min_free_kbytes=1024 | tee -a /etc/sysctl.conf;
 
 echo "Step 1: Updating opkg package lists..."
-apk update;
+opkg update;
 
 echo "Step 2: Installing required packages: block-mount, kmod-fs-ext4, e2fsprogs, parted..."
-apk add block-mount kmod-fs-ext4 e2fsprogs parted;
+opkg install block-mount kmod-fs-ext4 e2fsprogs parted;
 
 echo "Step 3: Creating a new GPT partition table on ${DISK}..."
 # Create GPT label (this will destroy existing partition table)
