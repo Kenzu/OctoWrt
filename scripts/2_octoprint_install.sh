@@ -21,18 +21,28 @@ echo "   ### Installing dependencies ###"
 echo "   ###############################"
 echo " "
 
+<<<<<<< HEAD
 apk update
 apk add --force-overwrite gcc;
 apk add make unzip htop wget-ssl git-http kmod-video-uvc luci-app-mjpg-streamer v4l-utils mjpg-streamer-input-uvc mjpg-streamer-output-http mjpg-streamer-www ffmpeg
 apk add python3 python3-pip python3-dev python3-markupsafe python3-zeroconf
+=======
+opkg update
+opkg install --force-overwrite gcc;
+opkg install make unzip htop wget-ssl git-http kmod-video-uvc luci-app-mjpg-streamer v4l-utils mjpg-streamer-input-uvc mjpg-streamer-output-http mjpg-streamer-www ffmpeg
+opkg install python3 python3-pip python3-dev python3-netifaces python3-markupsafe python3-zeroconf
+>>>>>>> parent of 2a98e40 (Switch package manager from opkg to apk)
 
-#wget -q https://raw.githubusercontent.com/shivajiva101/KlipperWrt/v4.4/python/python3-pillow_10.1.0-r1_mipsel_24kc.ipk
-#apk add /root/python3-pillow_10.1.0-r1_mipsel_24kc.ipk
+wget -q https://raw.githubusercontent.com/shivajiva101/KlipperWrt/v4.4/python/python3-pillow_10.1.0-r1_mipsel_24kc.ipk
+opkg install /root/python3-pillow_10.1.0-r1_mipsel_24kc.ipk
 
 pip install --upgrade setuptools
 pip install --upgrade pip
+<<<<<<< HEAD
 pip install --upgrade Pillow
 pip install netifaces
+=======
+>>>>>>> parent of 2a98e40 (Switch package manager from opkg to apk)
 
 echo "Fetching wheels..."
 mkdir python_wheels
@@ -70,7 +80,7 @@ echo "   ### Hostname/ip ###"
 echo "   ###################"
 echo " "
 
-apk add avahi-daemon-service-ssh avahi-daemon-service-http;
+opkg install avahi-daemon-service-ssh avahi-daemon-service-http;
 
 echo " "
 echo "   ##################################"
