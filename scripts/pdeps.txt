@@ -6,4 +6,3 @@ regex==2025.7.34
 sgmllib3k==1.0.0
 tornado==6.2
 watchdog==2.3.1
-Pillow
