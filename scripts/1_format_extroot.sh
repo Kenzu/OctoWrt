@@ -7,69 +7,56 @@ DISK="/dev/mmcblk0";
 sysctl vm.min_free_kbytes=1024 | tee -a /etc/sysctl.conf;
 
 echo "Step 1: Updating opkg package lists..."
-opkg update;
+apk update;
 
 echo "Step 2: Installing required packages: block-mount, kmod-fs-ext4, e2fsprogs, parted..."
-opkg install block-mount kmod-fs-ext4 e2fsprogs parted;
+apk add block-mount kmod-fs-ext4 e2fsprogs parted;
 
 echo "Step 3: Creating a new GPT partition table on ${DISK}..."
 # Create GPT label (this will destroy existing partition table)
 parted -s ${DISK} -- mklabel gpt;
 
-echo "Step 4: Creating a swap partition (start: 2048s, size: 256M) on ${DISK}..."
-# Create swap partition (p1)
-parted -s ${DISK} -- mkpart swap 2048s 256M;
-
-echo "Step 5: Creating extroot partition (from 256M to end of disk) on ${DISK}..."
+echo "Step 4: Creating extroot partition (from 2048s to end of disk) on ${DISK}..."
 # Create extroot partition (p2)
-parted -s ${DISK} -- mkpart extroot 256M 100%;
+parted -s ${DISK} -- mkpart extroot 2048s 100%;
 
-SWAP="${DISK}p1";
-DEVICE="${DISK}p2";
+DEVICE="${DISK}p1";
 
-echo "Step 6: Formatting the swap partition ${SWAP}..."
-mkswap ${SWAP};
-
-echo "Step 7: Formatting the extroot partition ${DEVICE} as ext4 and labeling it 'extroot'..."
+echo "Step 5: Formatting the extroot partition ${DEVICE} as ext4 and labeling it 'extroot'..."
 mkfs.ext4 -F -L extroot ${DEVICE};
 
-echo "Step 8: Reading UUID for ${DEVICE} from block info..."
+echo "Step 6: Reading UUID for ${DEVICE} from block info..."
 # Extract UUID="..." string and evaluate so UUID variable is exported in the script environment
 eval $(block info ${DEVICE} | grep -o -e 'UUID="\S*"');
 
 # Confirm we found a UUID
 echo "Found device UUID: ${UUID}";
 
-echo "Step 9: Finding current overlay mount point from block info..."
+echo "Step 7: Finding current overlay mount point from block info..."
 # Extract MOUNT="/path/to/overlay"
 eval $(block info | grep -o -e 'MOUNT="\S*/overlay"');
 
 # Confirm we found an overlay mount path
 echo "Detected overlay mount point: ${MOUNT}";
 
-echo "Step 10: Updating UCI fstab configuration to use new extroot and enable swap..."
+echo "Step 8: Updating UCI fstab configuration to use new extroot and enable swap..."
 # Remove any existing extroot fstab entry then create a new one pointing by UUID
 uci -q delete fstab.extroot;
 uci set fstab.extroot="mount";
 uci set fstab.extroot.uuid="${UUID}";
 uci set fstab.extroot.target="${MOUNT}";
 
-echo "Adding swap entry to fstab and enabling it..."
-uci add fstab swap;
-uci set fstab.@swap[-1].enabled="1";
-uci set fstab.@swap[-1].device="${SWAP}";
-
 echo "Committing fstab changes..."
 uci commit fstab;
 
-echo "Step 11: Mounting the new extroot partition ${DEVICE} to /mnt..."
+echo "Step 9: Mounting the new extroot partition ${DEVICE} to /mnt..."
 mount ${DEVICE} /mnt;
 
-echo "Step 12: Copying current root filesystem data from ${MOUNT} to new extroot at /mnt..."
+echo "Step 10: Copying current root filesystem data from ${MOUNT} to new extroot at /mnt..."
 # Use tar over a pipe to preserve metadata while copying the full overlay contents
 tar -C ${MOUNT} -cvf - . | tar -C /mnt -xf -;
 
-echo "Step 13: Syncing disks (ensure data is written) and rebooting..."
+echo "Step 11: Syncing disks (ensure data is written) and rebooting..."
 sync;
 
 echo "Rebooting now to apply extroot configuration. The system will switch to the new extroot on boot."
